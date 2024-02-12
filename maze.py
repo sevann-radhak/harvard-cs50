@@ -53,10 +53,13 @@ class Maze():
             raise Exception("maze must have exactly one goal")
 
         # Determine height and width of maze
-        contents = contents.splitlines()
+        contents = contents.splitlines()    
         self.height = len(contents)
         self.width = max(len(line) for line in contents)
-
+    
+        # print(f'contents: {contents}')
+        # print(f'height: {self.height}, width: {self.width}')
+        
         # Keep track of walls
         self.walls = []
         for i in range(self.height):
@@ -75,6 +78,8 @@ class Maze():
                         row.append(True)
                 except IndexError:
                     row.append(False)
+            
+            # print(f'row: {row}')
             self.walls.append(row)
 
         self.solution = None
@@ -123,7 +128,7 @@ class Maze():
 
         # Initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFrontier()
+        frontier = QueueFrontier()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -131,7 +136,6 @@ class Maze():
 
         # Keep looping until solution found
         while True:
-
             # If nothing left in frontier, then no path
             if frontier.empty():
                 raise Exception("no solution")
@@ -144,13 +148,16 @@ class Maze():
             if node.state == self.goal:
                 actions = []
                 cells = []
+                
                 while node.parent is not None:
                     actions.append(node.action)
                     cells.append(node.state)
                     node = node.parent
+                    
                 actions.reverse()
                 cells.reverse()
                 self.solution = (actions, cells)
+                
                 return
 
             # Mark node as explored
@@ -198,11 +205,13 @@ class Maze():
 
                 # Explored
                 elif solution is not None and show_explored and (i, j) in self.explored:
-                    fill = (212, 97, 85)
+                    fill = (212, 97, 85)     
 
                 # Empty cell
                 else:
                     fill = (237, 240, 252)
+
+                text = draw.text((j * cell_size + cell_size/2, i * cell_size + cell_size/2), str(self.num_explored), fill=(255,255,255), font=None, anchor=None, spacing=0, align="center")               
 
                 # Draw cell
                 draw.rectangle(
@@ -210,7 +219,7 @@ class Maze():
                       ((j + 1) * cell_size - cell_border, (i + 1) * cell_size - cell_border)]),
                     fill=fill
                 )
-
+                
         img.save(filename)
 
 
