@@ -1,8 +1,8 @@
 def main():
     greeting = input('Greeting: ')
-    print(f'${calculate(greeting)}')
+    print(f'${value(greeting)}')
 
-def calculate(greeting):
+def value(greeting):
     greeting = greeting.lower().strip()
        
     if greeting.startswith('hello'):

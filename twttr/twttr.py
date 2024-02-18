@@ -1,10 +1,10 @@
 def main():
     tweet = input('Input: ')
-    twt = convert(tweet)
+    twt = shorten(tweet)
     print(twt)
     
 
-def convert(s):      
+def shorten(s):      
     vowels = ['a', 'e', 'i', 'o', 'u']
     vowels.extend([v.upper() for v in vowels])
     

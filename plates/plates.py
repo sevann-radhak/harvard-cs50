@@ -1,5 +1,7 @@
 def main():
     plate = input("Plate: ")
+    plate = plate.strip()
+    
     if is_valid(plate):
         print("Valid")
     else:
